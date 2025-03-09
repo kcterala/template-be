@@ -1,0 +1,34 @@
+<configuration>
+    <!-- Define the custom pattern before including defaults.xml -->
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%thread] [requestId=%X{requestId}] %logger{36} - %msg%n"/>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <springProperty scope="context" name="LOG_PATH" source="logging.file.path"/>
+    <springProperty scope="context" name="TOTAL_SIZE_CAP" source="logging.file.totalSizeCap"/>
+    <springProperty scope="context" name="MAX_HISTORY" source="logging.file.maxHistory"/>
+    <springProperty scope="context" name="MAX_FILE_SIZE" source="logging.file.maxFileSize"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ROTATE_FILE_DAILY" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--location can be changed here-->
+            <fileNamePattern>${LOG_PATH}/template-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="ROTATE_FILE_DAILY" />
+    </root>
+</configuration>
