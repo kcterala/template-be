@@ -1,5 +1,7 @@
 package dev.kcterala.template.controllers;
 
+import dev.kcterala.template.exceptions.ErrorCode;
+import dev.kcterala.template.exceptions.TemplateException;
 import org.springframework.boot.availability.ApplicationAvailability;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,11 @@ public class HealthCheckController {
 
     public HealthCheckController(final ApplicationAvailability applicationAvailability) {
         this.applicationAvailability = applicationAvailability;
+    }
+
+    @GetMapping
+    public ResponseEntity<String> test() throws TemplateException {
+        throw new TemplateException(ErrorCode.BAD_REQUEST, "Test Exception");
     }
 
     @GetMapping("/livenessState")
