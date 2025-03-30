@@ -2,18 +2,20 @@ package dev.kcterala.template.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class LogUtils {
     private static final Logger log = LoggerFactory.getLogger(LogUtils.class);
+    private static final ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private static final String REQUEST_ID_HEADER = "X-Request-Id";
     private static final String FORWARDED_FOR_HEADER = "X-Forwarded-For";
     private static final String REAL_IP_HEADER = "X-Real-IP";
@@ -25,7 +27,7 @@ public class LogUtils {
         final long startTime = System.currentTimeMillis();
         String requestId = request.getHeader(REQUEST_ID_HEADER);
         if (requestId == null || requestId.isBlank()) {
-            requestId = RandomStringUtils.secure().nextAlphanumeric(15);
+            requestId = UUID.randomUUID().toString();
         }
 
         MDC.put(LogKey.START_TIME, String.valueOf(startTime));
@@ -35,8 +37,7 @@ public class LogUtils {
     }
 
     public static void logRequestResponse(final HttpServletRequest request,
-                                          final HttpServletResponse response,
-                                          final ObjectMapper objectMapper) throws JsonProcessingException {
+                                          final HttpServletResponse response) throws JsonProcessingException {
         final long endTime = System.currentTimeMillis();
         final long startTime = Long.parseLong(MDC.get(LogKey.START_TIME));
         final long latency = endTime - startTime;

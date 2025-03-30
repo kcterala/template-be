@@ -1,4 +1,4 @@
-package dev.kcterala.template.exceptions;
+package dev.kcterala.template.pojos.enums;
 
 public enum ErrorCode {
     BAD_REQUEST("BAD_REQUEST", 400, false),

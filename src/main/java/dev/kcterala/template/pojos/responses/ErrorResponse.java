@@ -3,11 +3,11 @@ package dev.kcterala.template.pojos.responses;
 import java.time.LocalDateTime;
 
 public class ErrorResponse {
-    private LocalDateTime timestamp;
-    private int status;
-    private String errorType;
-    private String message;
-    private Object details;
+    private final LocalDateTime timestamp;
+    private final int status;
+    private final String errorType;
+    private final String message;
+    private final Object details;
 
     public ErrorResponse(final int statusCode, final String errorType, final String message, final Object details) {
         this.timestamp = LocalDateTime.now();

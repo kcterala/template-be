@@ -1,5 +1,7 @@
 package dev.kcterala.template.exceptions;
 
+import dev.kcterala.template.pojos.enums.ErrorCode;
+
 public class TemplateException extends Exception {
     public ErrorCode errorCode;
     public Object details;

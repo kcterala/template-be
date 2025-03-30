@@ -1,6 +1,5 @@
 package dev.kcterala.template.filters;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.kcterala.template.utils.LogUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,12 +15,6 @@ import java.io.IOException;
 @Component
 public class LoggingFilter extends OncePerRequestFilter {
 
-    private final ObjectMapper objectMapper;
-
-    public LoggingFilter(final ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
-
 
     @Override
     protected void doFilterInternal(final @NotNull HttpServletRequest request,
@@ -32,7 +25,7 @@ public class LoggingFilter extends OncePerRequestFilter {
             LogUtils.setupMDC(request);
             filterChain.doFilter(request, response);
         } finally {
-            LogUtils.logRequestResponse(request, response, objectMapper);
+            LogUtils.logRequestResponse(request, response);
             MDC.clear();
         }
     }
