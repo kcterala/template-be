@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
+
 @RestController
 @RequestMapping("/health")
 @Tag(name = "Health API", description = "Application Monitoring APIs")
@@ -29,12 +31,12 @@ public class HealthCheckController {
         throw new TemplateException(ErrorCode.INTERNAL_SERVER_ERROR, "Test Exception");
     }
 
-    @GetMapping("/livenessState")
+    @GetMapping(value = "/livenessState", produces = TEXT_PLAIN_VALUE)
     public ResponseEntity<String> getLivenessState() {
         return ResponseEntity.ok(applicationAvailability.getLivenessState().name());
     }
 
-    @GetMapping("/readinessState")
+    @GetMapping(value = "/readinessState", produces = TEXT_PLAIN_VALUE)
     public ResponseEntity<String> getReadinessState() {
         return ResponseEntity.ok(applicationAvailability.getReadinessState().name());
     }
